@@ -43,21 +43,22 @@ function renderBrowserPage(url, title) {
     `<title>Artifact: ${title}</title>`,
     `<script>
       window.onload = function() {
+        document.querySelector('#urlbox').value = window.location;
+        document.querySelector('#copyurl').addEventListener("click", function() {
           document.querySelector('#urlbox').value = window.location;
-          document.querySelector('#copyurl').addEventListener("click", function() {
-            document.querySelector('#urlbox').value = window.location;
-            document.querySelector("#urlbox").select();
-            document.execCommand("copy");
-          });
+          document.querySelector("#urlbox").select();
+          document.execCommand("copy");
+        });
+        document.querySelector('#view').contentWindow.focus();
       }
     </script>`,
-    "<body><h1>Artifact</h1>",
+    `<body><h1>Artifact ${title}</h1>`,
     "<input id='urlbox' type='text' />",
     "<button id='copyurl'>Copy</button>",
     // This is something to allow showing the ultimately raw url, but I'm not
     // enabling it for now
     //`<a href="${url}"><button>Raw Object</button>URL NOT SAFE FOR COPYING!</a>`,
-    `<iframe referrerpolicy="origin" sandbox src="${url}" />`,
+    `<iframe id="view" referrerpolicy="origin" sandbox src="${url}" />`,
     "</body>",
     "</html>",    
   ].join('\n');
