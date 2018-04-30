@@ -110,31 +110,33 @@ objects.set('html', {
 });
 
 
-function longText() {
-  let words = [];
-  for (let i = 0; i < 1024 * 1024; i++) {
-    if (Math.random() > 0.7) {
-      words.push('\n');
+function longText(size) {
+  const space = ' '.charCodeAt(0);
+  const newline = '\n'.charCodeAt(0);
+  let words = new Buffer(size);
+  for (let i = 0; i < size; i++) {
+    if (Math.random() > 0.9) {
+      if (Math.random() > 0.9) {
+        words[i] = newline
+      } else {
+        words[i] = space;
+      }
+    } else {
+      words[i] = Math.floor(Math.random() * (90-65)) + 65;
     }
-
-    let length = (Math.random() * 50-3) + 3;
-
-    let word = '';
-
-    for (let j = 0; j < length; j++) {
-      word += String.fromCharCode(Math.floor(Math.random() * (90-65)) + 65)
-    }
-    words.push(word);
   }
-  return words.join(' ');
-
+  return words;
 }
 
 objects.set('longtext', {
   contentType: 'text/plain',
-  value: longText(),
+  value: longText(128 * 1024),
 });
 
+objects.set('reallylongtext', {
+  contentType: 'text/plain',
+  value: longText(32 * 1024 * 1024),
+});
 
 // Pretend this method is the Queue's getArtifact method
 app.get('/queue/artifacts/:name', (req, res) => {
