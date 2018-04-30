@@ -1,3 +1,5 @@
+"use strict";
+
 const express = require('express');
 const gzip = require('zlib');
 
@@ -52,6 +54,9 @@ function renderBrowserPage(url, title) {
     "<body><h1>Artifact</h1>",
     "<input id='urlbox' type='text' />",
     "<button id='copyurl'>Copy</button>",
+    // This is something to allow showing the ultimately raw url, but I'm not
+    // enabling it for now
+    //`<a href="${url}"><button>Raw Object</button>URL NOT SAFE FOR COPYING!</a>`,
     `<iframe referrerpolicy="origin" sandbox src="${url}" />`,
     "</body>",
     "</html>",    
@@ -101,6 +106,32 @@ objects.set('html', {
     </body>
     </html>
   `,
+});
+
+
+function longText() {
+  let words = [];
+  for (let i = 0; i < 1024 * 1024; i++) {
+    if (Math.random() > 0.7) {
+      words.push('\n');
+    }
+
+    let length = (Math.random() * 50-3) + 3;
+
+    let word = '';
+
+    for (let j = 0; j < length; j++) {
+      word += String.fromCharCode(Math.floor(Math.random() * (90-65)) + 65)
+    }
+    words.push(word);
+  }
+  return words.join(' ');
+
+}
+
+objects.set('longtext', {
+  contentType: 'text/plain',
+  value: longText(),
 });
 
 
