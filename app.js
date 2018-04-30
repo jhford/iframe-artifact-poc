@@ -147,8 +147,10 @@ app.get('/queue/artifacts/:name', (req, res) => {
   const hasReferrer = !!req.headers['referrer'];
 
   if (isBrowser && !hasReferrer) {
+    console.log('Browser without referrer, showing log in iframe');
     res.send(renderBrowserPage(`/object-service/objects/${req.params.name}`, req.path));
   } else {
+    console.log('Non-browser or browser with referrer, redirecting to raw object');
     res.redirect('/object-service/objects/' + req.params.name);
   }
 
