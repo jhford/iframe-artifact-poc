@@ -43,8 +43,8 @@ function renderBrowserPage(url, title) {
       window.onload = function() {
           document.querySelector('#urlbox').value = window.location;
           document.querySelector('#copyurl').addEventListener("click", function() {
-            var text = document.querySelector("#urlbox");
-            text.select();
+            document.querySelector('#urlbox').value = window.location;
+            document.querySelector("#urlbox").select();
             document.execCommand("copy");
           });
       }
